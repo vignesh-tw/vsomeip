@@ -8,9 +8,9 @@ jobs:
       - checkout
       - setup-toolchain
       - run:
-          name: Build vSOMEIP
+          name: Build vSOMEIP using cmake
           command: |
-            mkdir build ; cd build ; cmake .. ; make
+            ./do.sh cmake-build
 
 commands:
   setup-toolchain:
