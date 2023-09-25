@@ -11,6 +11,16 @@ jobs:
           name: Build vSOMEIP
           command: |
             ./do.sh cmake-build
+  
+  bazel_build:
+    docker:
+      - image: cimg/base:2023.09
+    steps:
+      - run:
+          name: Build nothing
+          command: |
+            echo "nothing is building yet"
+
 
 commands:
   setup-toolchain:
@@ -29,3 +39,4 @@ workflows:
   build-test-deploy:
     jobs:
       - cmake_build
+      - bazel_build
