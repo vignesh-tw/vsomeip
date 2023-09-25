@@ -19,7 +19,7 @@ commands:
     steps:
       - run:
           command: |
-            sudo apt update && sudo apt upgrade
+            sudo apt update
             sudo apt install -y ninja-build git unzip cmake build-essential
 
 workflows:
