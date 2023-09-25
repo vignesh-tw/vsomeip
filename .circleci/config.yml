@@ -18,6 +18,7 @@ commands:
       Install C++ build and test toolchains CMake, GCC and Gtest
     steps:
       - run:
+          name: Install project dependencies
           command: |
             sudo apt update
             sudo apt install -y ninja-build git unzip cmake build-essential libboost-all-dev googletest-tools
