@@ -20,7 +20,8 @@ commands:
       - run:
           command: |
             sudo apt update
-            sudo apt install -y ninja-build git unzip cmake build-essential
+            sudo apt install -y ninja-build git unzip cmake build-essential libboost-all-dev googletest-tools
+            sudo apt update
 
 workflows:
   version: 2
