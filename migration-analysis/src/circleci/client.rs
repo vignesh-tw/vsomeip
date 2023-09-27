@@ -6,15 +6,15 @@ use super::jobs::Jobs;
 
 #[derive(Debug)]
 pub struct Client {
-    git_slug: String,
-    project: String,
-    workflow: String,
-    reporting_window: String,
-    circleci_token: String,
+    pub git_slug: String,
+    pub project: String,
+    pub workflow: String,
+    pub reporting_window: String,
+    pub circleci_token: String,
 }
 
 impl Client {
-    fn from(git_slug: &String, project: &String, workflow: &String, reporting_window: &String, circleci_token: &String) -> Result<Client, Error> {
+    pub fn from(git_slug: &String, project: &String, workflow: &String, reporting_window: &String, circleci_token: &String) -> Result<Client, Error> {
         if git_slug.is_empty() {
             return Err(Error::new(ErrorKind::InvalidInput, "git_slug is empty"))
         }
@@ -63,11 +63,11 @@ impl Client {
         return headers;
     }
 
-    async fn get(&self, url: String, header_map: HeaderMap) -> Jobs {
+    pub async fn get(&self) -> Jobs {
         let client = reqwest::Client::new();
         
-        return client.get(url)
-            .headers(header_map) 
+        return client.get(self.jobs_url())
+            .headers(self.headers()) 
             .send()
             .await
             .expect("failed to retrieve response")
