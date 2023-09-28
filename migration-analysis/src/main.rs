@@ -26,8 +26,7 @@ async fn main() {
 
     let jobs = client.get_jobs().await;
 
-    let analysis = Analysis {};
-    let insights = analysis
+    let insights = Analysis {}
         .get_insights(
             &String::from("bazel_build"),
             &String::from("cmake_build"),
