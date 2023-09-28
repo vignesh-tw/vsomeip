@@ -52,7 +52,6 @@ impl Client {
             self.workflow,
             self.reporting_window
         );
-        
         return url.to_string();
     }
 
@@ -63,7 +62,7 @@ impl Client {
         return headers;
     }
 
-    pub async fn get(&self) -> Jobs {
+    pub async fn get_jobs(&self) -> Jobs {
         let client = reqwest::Client::new();
         
         return client.get(self.jobs_url())
