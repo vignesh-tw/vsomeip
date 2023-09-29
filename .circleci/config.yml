@@ -25,8 +25,12 @@ jobs:
     docker:
       - image: cimg/rust:1.72.1
     steps:
-      - checkout
-      - run: cargo --version
+      - checkout:
+          path: ~/migration-analysis 
+      - run:
+          name: Test migration analysis
+          command: |
+            cargo test
 
 
 commands:
