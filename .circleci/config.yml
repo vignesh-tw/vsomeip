@@ -20,6 +20,13 @@ jobs:
           name: Build nothing
           command: |
             echo "nothing is building yet"
+  
+  migration_analysis:
+    docker:
+      - image: cimg/rust:1.72.1
+    steps:
+      - checkout
+      - run: cargo --version
 
 
 commands:
@@ -38,5 +45,6 @@ workflows:
   version: 2
   build-test-deploy:
     jobs:
+      - migration_analysis
       - cmake_build
       - bazel_build
