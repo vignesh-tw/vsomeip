@@ -21,6 +21,10 @@ pub struct Config {
     #[clap(short,long)]
     auth: Option<String>,
 
+    /// Set the name of the followed project
+    #[clap(short,long)]
+    project: Option<String>,
+
     /// Set the slug of followed the project e.g. (github/space)
     #[clap(short,long)]
     slug: Option<String>
@@ -60,9 +64,10 @@ Options:
 Usage: config [OPTIONS]
 
 Options:
-  -a, --auth <AUTH>  Set the authorization field (circleci username)
-  -s, --slug <SLUG>  Set the slug of followed the project e.g. (github/space)
-  -h, --help         Print help
+  -a, --auth <AUTH>        Set the authorization field (circleci username)
+  -p, --project <PROJECT>  Set the name of the followed project
+  -s, --slug <SLUG>        Set the slug of followed the project e.g. (github/space)
+  -h, --help               Print help
 "#;
 
     #[test]
