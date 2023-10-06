@@ -3,7 +3,8 @@ mod cli;
 mod config;
 
 use circleci::client::Client;
-use circleci::migration::Analysis;
+use circleci::migration::{Analysis, Insight};
+use circleci::jobs::Jobs;
 use circleci::session::Session;
 use clap::Parser;
 
@@ -55,14 +56,18 @@ async fn main() {
     .unwrap();
 
     let jobs = client.get_jobs().await;
-
-    let insights = Analysis {}
-        .get_insights(
-            &String::from("bazel_build"),
-            &String::from("cmake_build"),
-            &jobs,
-        )
-        .unwrap();
+    let insights = get_jobs_insights(jobs);
 
     println!("{:?}", &insights)
+}
+
+fn get_jobs_insights(jobs: Jobs) -> Insight {
+    let insights = Analysis {}
+    .get_insights(
+        &String::from("bazel_build"),
+        &String::from("cmake_build"),
+        &jobs,
+    )
+    .unwrap();
+    return insights;
 }
