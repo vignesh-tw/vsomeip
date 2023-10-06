@@ -20,9 +20,9 @@ pub enum Actions {
 
 #[derive(Debug, Args)]
 pub struct Analysis {
-  /// Show migration data
+  /// Set name of the workflow
   #[clap(short,long)]
-  migration: ()
+  workflow: String
 }
 
 #[derive(Debug, Args)]
@@ -93,11 +93,11 @@ Options:
 
     const EXPECTED_ANALYSIS_HELP: &str = r#"Retrieve migration information
 
-Usage: analysis [OPTIONS]
+Usage: analysis --workflow <WORKFLOW>
 
 Options:
-  -m, --migration <MIGRATION>  Show migration data
-  -h, --help                   Print help
+  -w, --workflow <WORKFLOW>  Set name of the workflow
+  -h, --help                 Print help
 "#;
 
     #[test]
