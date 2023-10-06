@@ -20,7 +20,9 @@ pub enum Actions {
 
 #[derive(Debug, Args)]
 pub struct Analysis {
-
+  /// Show migration data
+  #[clap(short,long)]
+  migration: ()
 }
 
 #[derive(Debug, Args)]
@@ -87,5 +89,24 @@ Options:
         read_cmd.write_help(&mut cursor).unwrap();
         let help = String::from_utf8(cursor.into_inner()).unwrap();
         assert_eq!(help, EXPECTED_CONFIG_HELP);
+    }
+
+    const EXPECTED_ANALYSIS_HELP: &str = r#"Subcommand to retrieve migration information
+
+Usage: analysis [OPTIONS]
+
+Options:
+  -m, --migration <MIGRATION>  Show migration data
+  -h, --help                   Print help
+"#;
+
+    #[test]
+    fn test_analysis_help() {
+        let mut app = App::command();
+        let mut cursor: Cursor<Vec<u8>> = Cursor::new(Vec::new());
+        let read_cmd = app.find_subcommand_mut("analysis").unwrap();
+        read_cmd.write_help(&mut cursor).unwrap();
+        let help = String::from_utf8(cursor.into_inner()).unwrap();
+        assert_eq!(help, EXPECTED_ANALYSIS_HELP);
     }
 }
