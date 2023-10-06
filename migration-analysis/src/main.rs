@@ -1,5 +1,6 @@
 mod circleci;
 mod cli;
+mod config;
 
 use circleci::client::Client;
 use circleci::migration::Analysis;
