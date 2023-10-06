@@ -11,8 +11,16 @@ pub struct App {
 
 #[derive(Debug,Subcommand)]
 pub enum Actions {
+  /// Subcommand to retrieve migration information
+  Analysis(Analysis),
+
   /// Subcommand to interact with the configuration
-  Config(Config)
+  Config(Config),
+}
+
+#[derive(Debug, Args)]
+pub struct Analysis {
+
 }
 
 #[derive(Debug, Args)]
@@ -42,8 +50,9 @@ mod tests {
 Usage: mig <COMMAND>
 
 Commands:
-  config  Subcommand to interact with the configuration
-  help    Print this message or the help of the given subcommand(s)
+  analysis  Subcommand to retrieve migration information
+  config    Subcommand to interact with the configuration
+  help      Print this message or the help of the given subcommand(s)
 
 Options:
   -h, --help     Print help
