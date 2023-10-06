@@ -4,17 +4,17 @@ use clap::{Args,Parser,Subcommand};
 #[derive(Debug, Parser)]
 #[clap(name = "mig", version)]
 pub struct App {
-    /// Subcommand to interact with the configuration
+    /// Manage the configuration
     #[clap(subcommand)]
     command: Actions, 
 }
 
 #[derive(Debug,Subcommand)]
 pub enum Actions {
-  /// Subcommand to retrieve migration information
+  /// Retrieve migration information
   Analysis(Analysis),
 
-  /// Subcommand to interact with the configuration
+  /// Manage the configuration
   Config(Config),
 }
 
@@ -52,8 +52,8 @@ mod tests {
 Usage: mig <COMMAND>
 
 Commands:
-  analysis  Subcommand to retrieve migration information
-  config    Subcommand to interact with the configuration
+  analysis  Retrieve migration information
+  config    Manage the configuration
   help      Print this message or the help of the given subcommand(s)
 
 Options:
@@ -70,7 +70,7 @@ Options:
         assert_eq!(help, EXPECTED_HELP);
     }
 
-    const EXPECTED_CONFIG_HELP: &str = r#"Subcommand to interact with the configuration
+    const EXPECTED_CONFIG_HELP: &str = r#"Manage the configuration
 
 Usage: config [OPTIONS]
 
@@ -91,7 +91,7 @@ Options:
         assert_eq!(help, EXPECTED_CONFIG_HELP);
     }
 
-    const EXPECTED_ANALYSIS_HELP: &str = r#"Subcommand to retrieve migration information
+    const EXPECTED_ANALYSIS_HELP: &str = r#"Retrieve migration information
 
 Usage: analysis [OPTIONS]
 
