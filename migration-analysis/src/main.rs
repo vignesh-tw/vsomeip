@@ -21,34 +21,28 @@ const DEFAULT_REPORTING_WINDOW: &str = "last-7-days";
 #[tokio::main]
 async fn main() {
     let cli = App::parse();
+    let config_manager = Manager::new(None);
     match &cli.command {
         Actions::Config(arg) => {
-            let mut authorization = String::from("");
-            let mut project = String::from("");
-            let mut slug = String::from("");
-            match &arg.auth {
-                Some(auth_arg) => {
-                    _ = &authorization.replace_range(.., &auth_arg);
-                },
-                None => (),
-            }
-            match &arg.project {
-                Some(project_arg) => {
-                    _ = &project.replace_range(.., &project_arg);
-                },
-                None => (),
-            }
-            match &arg.slug {
-                Some(slug_arg) => {
-                    _ = &slug.replace_range(.., &slug_arg);
-                },
-                None => (),                
-            }
-            let config_manager = Manager::new(None);
+            let authorization = match &arg.auth {
+                Some(auth_val) => String::from(auth_val),
+                None => String::from(""),
+            };
+            let project = match &arg.project {
+                Some(project_val) => String::from(project_val),
+                None => String::from(""),
+            };
+            let slug = match &arg.slug {
+                Some(slug_val) => String::from(slug_val),
+                None => String::from(""),
+            };
             config_manager.write_config(authorization, project, slug);
         },
         Actions::Analysis(arg) => {
-            println!("not implemented yet!")
+            let config = config_manager.read_config();
+            let jobs = retrieve_jobs(&config.slug, &config.project, &arg.workflow, &arg.reporting_window, &config.authorization).await;
+            let insights = get_jobs_insights(jobs);
+            println!("{:?}", insights);
         }
     }
 }
