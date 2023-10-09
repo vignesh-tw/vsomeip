@@ -1,4 +1,5 @@
 use super::jobs::{Jobs,Item};
+use std::fmt;
 use std::io::{Error,ErrorKind};
 
 #[derive(Debug)]
@@ -9,6 +10,27 @@ pub struct Insight {
     pub mean_differential: f64,
     pub median_differential: f64,
     pub max_differential: f64,
+}
+
+impl fmt::Display for Insight {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let display = format!(r#"Migration analysis:
+
+        base job: {}
+        migration job: {}
+        minimum duration - differential: {}
+        maximum duration - differential: {}
+        mean duration - differential: {}
+        median duration - differential: {}
+        "#, 
+        self.base_job,
+        self.migration_job,
+        self.min_differential,
+        self.max_differential,
+        self.mean_differential,
+        self.median_differential);
+        write!(f, "{}", display)
+    }
 }
 
 #[derive(Debug)]
@@ -125,6 +147,41 @@ mod tests {
         assert_eq!(median_differential,insights.median_differential);
         assert_eq!(mean_differential,insights.mean_differential);
         assert_eq!(max_differential,insights.max_differential);
+    }
+
+    #[test]
+    fn display_insights_returns_formatted_insights() {
+        let base_job: String = String::from("base job");
+        let migration_job: String = String::from("migration job");
+        let min_differential: f64 = 1.0;
+        let mean_differential: f64 = 1.0;
+        let median_differential: f64 = 1.0;
+        let max_differential: f64 = 1.0;
+
+        let expected_display = format!(r#"Migration analysis:
+
+        base job: {}
+        migration job: {}
+        minimum duration - differential: {}
+        maximum duration - differential: {}
+        mean duration - differential: {}
+        median duration - differential: {}
+        "#,&base_job,&migration_job,&min_differential,&max_differential,&mean_differential,&median_differential);
+
+        let insights = Insight {
+            base_job,
+            migration_job,
+            min_differential,
+            mean_differential,
+            median_differential,
+            max_differential,
+        };
+
+
+
+        let insight_display = format!("{}", insights);
+
+        assert_eq!(insight_display,expected_display);
     }
 
     fn base_workflow_item(workflow_name: &String) -> Item { 
