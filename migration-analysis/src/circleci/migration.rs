@@ -3,6 +3,8 @@ use std::io::{Error,ErrorKind};
 
 #[derive(Debug)]
 pub struct Insight {
+    pub base_job: String,
+    pub migration_job: String,
     pub min_differential: f64,
     pub mean_differential: f64,
     pub median_differential: f64,
@@ -14,20 +16,22 @@ pub struct Analysis {
 }
 
 impl Analysis {
-    pub fn get_insights(&self, migration_workflow_name: &String, base_workflow_name: &String, jobs: &Jobs) -> Result<Insight, Error> {
-        let base_workflow_option = get_item_with_name(&jobs.items, base_workflow_name);
+    pub fn get_insights(&self, migration_job_name: &String, base_job_name: &String, jobs: &Jobs) -> Result<Insight, Error> {
+        let base_workflow_option = get_item_with_name(&jobs.items, base_job_name);
         if base_workflow_option.is_none() {
-            return Err(Error::new(ErrorKind::InvalidInput, format!("failed to find workflow {} in retrieved jobs", &base_workflow_name))); 
+            return Err(Error::new(ErrorKind::InvalidInput, format!("failed to find workflow {} in retrieved jobs", &base_job_name))); 
         }
         let base_workflow = base_workflow_option.unwrap();
 
-        let migration_workflow_option = get_item_with_name(&jobs.items, migration_workflow_name);
+        let migration_workflow_option = get_item_with_name(&jobs.items, migration_job_name);
         if migration_workflow_option.is_none() {
-            return Err(Error::new(ErrorKind::InvalidInput, format!("failed to find workflow {} in retrieved jobs", &migration_workflow_name))); 
+            return Err(Error::new(ErrorKind::InvalidInput, format!("failed to find workflow {} in retrieved jobs", &migration_job_name))); 
         }
         let migration_workflow = migration_workflow_option.unwrap();
 
-        Ok(Insight { 
+        Ok(Insight {
+            base_job: String::from(base_job_name),
+            migration_job: String::from(migration_job_name), 
             min_differential: (migration_workflow.metrics.duration_metrics.min as f64 - base_workflow.metrics.duration_metrics.min as f64),
             mean_differential: (migration_workflow.metrics.duration_metrics.mean as f64 - base_workflow.metrics.duration_metrics.mean as f64),
             median_differential: (migration_workflow.metrics.duration_metrics.median as f64 - base_workflow.metrics.duration_metrics.median as f64),
@@ -88,8 +92,8 @@ mod tests {
 
     #[test]
     fn get_insights() {
-        let base_workflow_name = String::from("base workflow");
-        let base_workflow_item = base_workflow_item(&base_workflow_name);
+        let base_job_name: String = String::from("base workflow");
+        let base_workflow_item = base_workflow_item(&base_job_name);
         let base_workflow_min = base_workflow_item.metrics.duration_metrics.min;
         let base_workflow_median = base_workflow_item.metrics.duration_metrics.median;
         let base_workflow_mean = base_workflow_item.metrics.duration_metrics.mean;
@@ -108,13 +112,15 @@ mod tests {
         };
 
         let analysis = Analysis{};
-        let  insights = analysis.get_insights(&migration_workflow_name,&base_workflow_name, &jobs).unwrap();
+        let  insights = analysis.get_insights(&migration_workflow_name,&base_job_name, &jobs).unwrap();
 
         let min_differential  = migration_workflow_min as f64 - base_workflow_min as f64;
         let median_differential  = migration_workflow_median as f64 - base_workflow_median as f64;
         let mean_differential = migration_workflow_mean as f64 - base_workflow_mean as f64;
         let max_differential = migration_workflow_max as f64 - base_workflow_max as f64;
 
+        assert_eq!(base_job_name,insights.base_job);
+        assert_eq!(migration_workflow_name, insights.migration_job);
         assert_eq!(min_differential,insights.min_differential);
         assert_eq!(median_differential,insights.median_differential);
         assert_eq!(mean_differential,insights.mean_differential);
