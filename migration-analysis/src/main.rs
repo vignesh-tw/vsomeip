@@ -5,17 +5,9 @@ mod config;
 use circleci::client::Client;
 use circleci::migration::{Analysis, Insight};
 use circleci::jobs::Jobs;
-use clap::{Parser};
-use cli::app::{Actions,App, Config};
+use clap::Parser;
+use cli::app::{Actions,App};
 use config::manager::Manager;
-
-
-const DEFAULT_CONFIG: &str = "config.json";
-const DEFAULT_SLUG: &str = "github/vignesh-tw";
-const DEFAULT_PROJECT: &str = "vsomeip";
-const DEFAULT_WORKFLOW: &str = "build-test-deploy";
-const DEFAULT_REPORTING_WINDOW: &str = "last-7-days";
-
 
 
 #[tokio::main]

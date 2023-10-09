@@ -79,7 +79,7 @@ mod tests {
 
     #[test]
     fn config_exist_returns_false_if_config_file_does_not_exist() {
-        let manager = Manager::new(None);
+        let manager = Manager::new(Some("non-extising"));
         let config_exist = manager.config_exist();
 
         assert!(!config_exist);
