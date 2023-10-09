@@ -10,21 +10,33 @@ pub struct Insight {
     pub mean_differential: f64,
     pub median_differential: f64,
     pub max_differential: f64,
+    pub window_start: String,
+    pub window_end: String,
 }
 
 impl fmt::Display for Insight {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let display = format!(r#"Migration analysis:
+        let display = format!(r#"
+        Migration analysis:
 
-        base job: {}
-        migration job: {}
-        minimum duration - differential: {}
-        maximum duration - differential: {}
-        mean duration - differential: {}
-        median duration - differential: {}
+        Details:
+
+            base job: {}
+            migration job: {}
+            window start: {}
+            window end: {}
+
+        Data:
+
+            minimum duration - differential: {}
+            maximum duration - differential: {}
+            mean duration - differential: {}
+            median duration - differential: {}
         "#, 
         self.base_job,
         self.migration_job,
+        self.window_start,
+        self.window_end,
         self.min_differential,
         self.max_differential,
         self.mean_differential,
@@ -58,6 +70,8 @@ impl Analysis {
             mean_differential: (migration_workflow.metrics.duration_metrics.mean as f64 - base_workflow.metrics.duration_metrics.mean as f64),
             median_differential: (migration_workflow.metrics.duration_metrics.median as f64 - base_workflow.metrics.duration_metrics.median as f64),
             max_differential: (migration_workflow.metrics.duration_metrics.max as f64 - base_workflow.metrics.duration_metrics.max as f64),
+            window_start: migration_workflow.window_start,
+            window_end: migration_workflow.window_end,
          })
     }
 }
@@ -157,16 +171,34 @@ mod tests {
         let mean_differential: f64 = 1.0;
         let median_differential: f64 = 1.0;
         let max_differential: f64 = 1.0;
+        let window_start: String = String::from("start");
+        let window_end: String = String::from("end");
 
-        let expected_display = format!(r#"Migration analysis:
+        let expected_display = format!(r#"
+        Migration analysis:
 
-        base job: {}
-        migration job: {}
-        minimum duration - differential: {}
-        maximum duration - differential: {}
-        mean duration - differential: {}
-        median duration - differential: {}
-        "#,&base_job,&migration_job,&min_differential,&max_differential,&mean_differential,&median_differential);
+        Details:
+
+            base job: {}
+            migration job: {}
+            window start: {}
+            window end: {}
+
+        Data:
+
+            minimum duration - differential: {}
+            maximum duration - differential: {}
+            mean duration - differential: {}
+            median duration - differential: {}
+        "#,
+        &base_job,
+        &migration_job,
+        &window_start,
+        &window_end,
+        &min_differential,
+        &max_differential,
+        &mean_differential,
+        &median_differential);
 
         let insights = Insight {
             base_job,
@@ -175,9 +207,9 @@ mod tests {
             mean_differential,
             median_differential,
             max_differential,
+            window_start,
+            window_end
         };
-
-
 
         let insight_display = format!("{}", insights);
 
