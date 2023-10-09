@@ -6,7 +6,7 @@ use clap::{Args,Parser,Subcommand};
 pub struct App {
     /// Manage the configuration
     #[clap(subcommand)]
-    command: Actions, 
+    pub command: Actions, 
 }
 
 #[derive(Debug,Subcommand)]
@@ -22,26 +22,26 @@ pub enum Actions {
 pub struct Analysis {
   /// Set reporting window
   #[clap(short,long)]
-  reporting_window: String,
+  pub reporting_window: String,
 
   /// Set name of the workflow
   #[clap(short,long)]
-  workflow: String
+  pub workflow: String
 }
 
 #[derive(Debug, Args)]
 pub struct Config {
     /// Set the authorization field (circleci username)
     #[clap(short,long)]
-    auth: Option<String>,
+    pub auth: Option<String>,
 
     /// Set the name of the followed project
     #[clap(short,long)]
-    project: Option<String>,
+    pub project: Option<String>,
 
     /// Set the slug of followed the project e.g. (github/space)
     #[clap(short,long)]
-    slug: Option<String>
+    pub slug: Option<String>
 }
 
 #[cfg(test)]

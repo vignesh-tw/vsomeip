@@ -9,9 +9,9 @@ const DEFAULT_CONFIG_PATH: &str =  ".mig.json";
 
 #[derive(Serialize, Deserialize)]
 pub struct Config {
-    authorization: String,
-    project: String,
-    slug: String
+    pub authorization: String,
+    pub project: String,
+    pub slug: String
 }
 
 #[allow(dead_code)]
