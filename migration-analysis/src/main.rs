@@ -34,7 +34,7 @@ async fn main() {
             let config = config_manager.read_config();
             let jobs = retrieve_jobs(&config.slug, &config.project, &arg.workflow, &arg.reporting_window, &config.authorization).await;
             let insights = get_jobs_insights(jobs);
-            println!("{:?}", insights);
+            println!("{}", insights);
         }
     }
 }
