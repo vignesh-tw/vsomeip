@@ -113,3 +113,4 @@ test/security_tests/security_test_local_config.json
 build
 migration-analysis/target
 test
+migration-analysis/.mig.json
