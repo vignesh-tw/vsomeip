@@ -114,3 +114,4 @@ build
 migration-analysis/target
 test
 migration-analysis/.mig.json
+.vscode
