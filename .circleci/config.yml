@@ -10,6 +10,7 @@ jobs:
       - run:
           name: Build vSOMEIP
           command: |
+            cd vsomeip
             ./do.sh cmake-build
   
   bazel_build:
